@@ -70,7 +70,7 @@ FORMAT = ihex
 
 
 # Target file name (without extension).
-TARGET = helloEmbeddedWorld
+TARGET = lab2a
 
 
 # Object files directory
