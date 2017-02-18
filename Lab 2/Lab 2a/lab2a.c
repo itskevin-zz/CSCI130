@@ -24,12 +24,30 @@ PB1 -->       D9 -->        JP3_8 -->         D1H
 void DELAY_us (unit16_t_us_count);
 void DELAY_ms (unit16_t_ms_count);
 
+//Declare Gloval Variables
+int num = 0;
+
 int main(void) {
   //declare DDRx
   DDRD = 0b11111100; /* (1<<2)|(1<<3)}(1<<4)|(1<<5)|(1<<6)|(1<<7); */
   DDRB = 0b00000011;
 
-  PORTD = 0b11111100;
-  PORTB = 0b00000011;
+  while (1) {
+    num++;
+    delay_ms(1000);
+
+    PORTD &= 0b00000011;
+    PORTD |= num << 2;
+
+    PORTB &= 0b11111100;
+    PORTB |= num >> 6;
+  }
+  return 0;
+}
+
+void delay_ms (uint16_t ms) {
+	uint16_t i;
+	for (i = 0; i < ms; i++)
+		_delay_ms(1);
 
 }
