@@ -25,7 +25,9 @@ void main(void)
    DDRD = 0x00;   //PORTD input
    PORTD = 0xff;  //PORTD internall pullup
 
-  while (1) {
-     PORTB = 0xff; // turn on PORTB
-   };
+/*   while(1)
+   {
+		if(!(PIND & (1<<PD0))) PORTB = PORTD;    //when button pressed, turn ON led
+		else PORTB = 0x00; 						    //when not pressed, turn OFF led
+  }*/
 }

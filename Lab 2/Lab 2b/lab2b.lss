@@ -3,17 +3,17 @@ lab2b.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000092  00000000  00000000  00000054  2**1
+  0 .text         00000090  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .debug_aranges 00000020  00000000  00000000  000000e6  2**0
+  1 .debug_aranges 00000020  00000000  00000000  000000e4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  2 .debug_pubnames 0000001b  00000000  00000000  00000106  2**0
+  2 .debug_pubnames 0000001b  00000000  00000000  00000104  2**0
                   CONTENTS, READONLY, DEBUGGING
-  3 .debug_info   00000072  00000000  00000000  00000121  2**0
+  3 .debug_info   00000072  00000000  00000000  0000011f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_abbrev 0000003f  00000000  00000000  00000193  2**0
+  4 .debug_abbrev 0000003f  00000000  00000000  00000191  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_line   00000079  00000000  00000000  000001d2  2**0
+  5 .debug_line   00000079  00000000  00000000  000001d0  2**0
                   CONTENTS, READONLY, DEBUGGING
   6 .debug_frame  00000020  00000000  00000000  0000024c  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -58,7 +58,7 @@ Disassembly of section .text:
   70:	de bf       	out	0x3e, r29	; 62
   72:	cd bf       	out	0x3d, r28	; 61
   74:	0e 94 40 00 	call	0x80	; 0x80 <main>
-  78:	0c 94 47 00 	jmp	0x8e	; 0x8e <_exit>
+  78:	0c 94 46 00 	jmp	0x8c	; 0x8c <_exit>
 
 0000007c <__bad_interrupt>:
   7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -72,20 +72,22 @@ void main(void)
    DDRB = 0xff;   //PORTB output
   80:	8f ef       	ldi	r24, 0xFF	; 255
   82:	84 b9       	out	0x04, r24	; 4
-   PORTB = 0x00;  //PORTB '0'
-  84:	15 b8       	out	0x05, r1	; 5
+   PORTB = 0xff;  //PORTB '0'
+  84:	85 b9       	out	0x05, r24	; 5
    DDRD = 0x00;   //PORTD input
   86:	1a b8       	out	0x0a, r1	; 10
    PORTD = 0xff;  //PORTD internall pullup
   88:	8b b9       	out	0x0b, r24	; 11
+/*   while(1)
+   {
+		if(!(PIND & (1<<PD0))) PORTB = PORTD;    //when button pressed, turn ON led
+		else PORTB = 0x00; 						    //when not pressed, turn OFF led
+  }*/
+}
+  8a:	08 95       	ret
 
-  while (1) {
-     PORTB = 0xff; // turn on PORTB
-  8a:	85 b9       	out	0x05, r24	; 5
-  8c:	fe cf       	rjmp	.-4      	; 0x8a <main+0xa>
+0000008c <_exit>:
+  8c:	f8 94       	cli
 
-0000008e <_exit>:
-  8e:	f8 94       	cli
-
-00000090 <__stop_program>:
-  90:	ff cf       	rjmp	.-2      	; 0x90 <__stop_program>
+0000008e <__stop_program>:
+  8e:	ff cf       	rjmp	.-2      	; 0x8e <__stop_program>
