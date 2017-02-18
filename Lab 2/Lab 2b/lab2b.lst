@@ -1,0 +1,40 @@
+   1               		.file	"lab2b.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	main
+  18               	main:
+  19               	.LFB2:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	.LM2:
+  24 0000 8FEF      		ldi r24,lo8(-1)
+  25 0002 84B9      		out 36-32,r24
+  26               	.LM3:
+  27 0004 15B8      		out 37-32,__zero_reg__
+  28               	.LM4:
+  29 0006 1AB8      		out 42-32,__zero_reg__
+  30               	.LM5:
+  31 0008 8BB9      		out 43-32,r24
+  32               	.L2:
+  33               	.LM6:
+  34 000a 85B9      		out 37-32,r24
+  35 000c 00C0      		rjmp .L2
+  36               	.LFE2:
+  62               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 lab2b.c
+C:\Users\Khoa\AppData\Local\Temp/cc4Z0Urg.s:2      *ABS*:0000003f __SREG__
+C:\Users\Khoa\AppData\Local\Temp/cc4Z0Urg.s:3      *ABS*:0000003e __SP_H__
+C:\Users\Khoa\AppData\Local\Temp/cc4Z0Urg.s:4      *ABS*:0000003d __SP_L__
+C:\Users\Khoa\AppData\Local\Temp/cc4Z0Urg.s:5      *ABS*:00000034 __CCP__
+C:\Users\Khoa\AppData\Local\Temp/cc4Z0Urg.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\Khoa\AppData\Local\Temp/cc4Z0Urg.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\Khoa\AppData\Local\Temp/cc4Z0Urg.s:18     .text:00000000 main
+
+NO UNDEFINED SYMBOLS

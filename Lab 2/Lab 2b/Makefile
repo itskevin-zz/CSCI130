@@ -70,7 +70,7 @@ FORMAT = ihex
 
 
 # Target file name (without extension).
-TARGET = lab2a
+TARGET = lab2b
 
 
 # Object files directory

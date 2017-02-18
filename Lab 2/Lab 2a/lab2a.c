@@ -34,7 +34,7 @@ int main(void) {
 
   while (1) {
     num++;
-    delay_ms(1000);
+    delay_ms(500);
 
     PORTD &= 0b00000011;
     PORTD |= num << 2;
