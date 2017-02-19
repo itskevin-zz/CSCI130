@@ -13,31 +13,75 @@
   21               	/* prologue: function */
   22               	/* frame size = 0 */
   23               	.LM2:
-  24 0000 8FEF      		ldi r24,lo8(-1)
-  25 0002 84B9      		out 36-32,r24
+  24 0000 8CEF      		ldi r24,lo8(-4)
+  25 0002 8AB9      		out 42-32,r24
   26               	.LM3:
-  27 0004 5298      		cbi 42-32,2
-  28               	.L5:
+  27 0004 83E0      		ldi r24,lo8(3)
+  28 0006 84B9      		out 36-32,r24
   29               	.LM4:
-  30 0006 4A9B      		sbis 41-32,2
-  31 0008 00C0      		rjmp .L2
+  30 0008 8CE0      		ldi r24,lo8(12)
+  31 000a 85B9      		out 37-32,r24
   32               	.LM5:
-  33 000a 2A9A      		sbi 37-32,2
-  34 000c 00C0      		rjmp .L5
-  35               	.L2:
-  36               	.LM6:
-  37 000e 2A98      		cbi 37-32,2
-  38 0010 00C0      		rjmp .L5
-  39               	.LFE2:
-  65               	.Letext0:
+  33 000c 1BB8      		out 43-32,__zero_reg__
+  34 000e 40E0      		ldi r20,lo8(0)
+  35 0010 50E0      		ldi r21,hi8(0)
+  36               	.LVL0:
+  37               	.L7:
+  38               	.LBB2:
+  39               	.LM6:
+  40 0012 1A99      		sbic 35-32,2
+  41 0014 00C0      		rjmp .L2
+  42               	.LM7:
+  43 0016 4F5F      		subi r20,lo8(-(1))
+  44 0018 5F4F      		sbci r21,hi8(-(1))
+  45 001a 00C0      		rjmp .L8
+  46               	.L2:
+  47               	.LM8:
+  48 001c 1B99      		sbic 35-32,3
+  49 001e 00C0      		rjmp .L7
+  50               	.LM9:
+  51 0020 4150      		subi r20,lo8(-(-1))
+  52 0022 5040      		sbci r21,hi8(-(-1))
+  53               	.L8:
+  54               	.LM10:
+  55 0024 8BB1      		in r24,43-32
+  56 0026 8370      		andi r24,lo8(3)
+  57 0028 8BB9      		out 43-32,r24
+  58               	.LM11:
+  59 002a 2BB1      		in r18,43-32
+  60 002c CA01      		movw r24,r20
+  61 002e 880F      		lsl r24
+  62 0030 991F      		rol r25
+  63 0032 880F      		lsl r24
+  64 0034 991F      		rol r25
+  65 0036 282B      		or r18,r24
+  66 0038 2BB9      		out 43-32,r18
+  67               	.LM12:
+  68 003a 85B1      		in r24,37-32
+  69 003c 8C7F      		andi r24,lo8(-4)
+  70 003e 85B9      		out 37-32,r24
+  71               	.LM13:
+  72 0040 25B1      		in r18,37-32
+  73 0042 CA01      		movw r24,r20
+  74 0044 36E0      		ldi r19,6
+  75 0046 9595      	1:	asr r25
+  76 0048 8795      		ror r24
+  77 004a 3A95      		dec r19
+  78 004c 01F4      		brne 1b
+  79 004e 282B      		or r18,r24
+  80 0050 25B9      		out 37-32,r18
+  81 0052 00C0      		rjmp .L7
+  82               	.LBE2:
+  83               	.LFE2:
+ 109               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 lab2b.c
-C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:2      *ABS*:0000003f __SREG__
-C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:3      *ABS*:0000003e __SP_H__
-C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:4      *ABS*:0000003d __SP_L__
-C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:5      *ABS*:00000034 __CCP__
-C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:6      *ABS*:00000000 __tmp_reg__
-C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:7      *ABS*:00000001 __zero_reg__
-C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:18     .text:00000000 main
+C:\Users\Khoa\AppData\Local\Temp/ccdf8DhL.s:2      *ABS*:0000003f __SREG__
+C:\Users\Khoa\AppData\Local\Temp/ccdf8DhL.s:3      *ABS*:0000003e __SP_H__
+C:\Users\Khoa\AppData\Local\Temp/ccdf8DhL.s:4      *ABS*:0000003d __SP_L__
+C:\Users\Khoa\AppData\Local\Temp/ccdf8DhL.s:5      *ABS*:00000034 __CCP__
+C:\Users\Khoa\AppData\Local\Temp/ccdf8DhL.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\Khoa\AppData\Local\Temp/ccdf8DhL.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\Khoa\AppData\Local\Temp/ccdf8DhL.s:18     .text:00000000 main
 
 NO UNDEFINED SYMBOLS

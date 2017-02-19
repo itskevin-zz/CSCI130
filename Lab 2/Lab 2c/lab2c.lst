@@ -1,0 +1,111 @@
+   1               		.file	"lab2c.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               	.global	main
+  18               	main:
+  19               	.LFB2:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	.LM2:
+  24 0000 8CEF      		ldi r24,lo8(-4)
+  25 0002 8AB9      		out 42-32,r24
+  26               	.LM3:
+  27 0004 83E0      		ldi r24,lo8(3)
+  28 0006 84B9      		out 36-32,r24
+  29               	.LM4:
+  30 0008 8CE1      		ldi r24,lo8(28)
+  31 000a 85B9      		out 37-32,r24
+  32               	.LM5:
+  33 000c 74E0      		ldi r23,lo8(4)
+  34               	.LM6:
+  35 000e 2CE1      		ldi r18,lo8(28)
+  36               	.LM7:
+  37 0010 9CEF      		ldi r25,lo8(-4)
+  38               	.LM8:
+  39 0012 6EE1      		ldi r22,lo8(30)
+  40               	.LM9:
+  41 0014 5CE7      		ldi r21,lo8(124)
+  42               	.LM10:
+  43 0016 4CE3      		ldi r20,lo8(60)
+  44               	.LM11:
+  45 0018 3CE0      		ldi r19,lo8(12)
+  46               	.L11:
+  47               	.LM12:
+  48 001a 1A99      		sbic 35-32,2
+  49 001c 00C0      		rjmp .L2
+  50               	.LM13:
+  51 001e 7BB9      		out 43-32,r23
+  52 0020 00C0      		rjmp .L11
+  53               	.L2:
+  54               	.LM14:
+  55 0022 1B99      		sbic 35-32,3
+  56 0024 00C0      		rjmp .L4
+  57               	.LM15:
+  58 0026 3BB9      		out 43-32,r19
+  59 0028 00C0      		rjmp .L11
+  60               	.L4:
+  61               	.LM16:
+  62 002a 1C99      		sbic 35-32,4
+  63 002c 00C0      		rjmp .L5
+  64               	.LM17:
+  65 002e 4BB9      		out 43-32,r20
+  66 0030 00C0      		rjmp .L11
+  67               	.L5:
+  68               	.LM18:
+  69 0032 83B1      		in r24,35-32
+  70 0034 8C70      		andi r24,lo8(12)
+  71 0036 01F4      		brne .L6
+  72               	.LM19:
+  73 0038 2BB9      		out 43-32,r18
+  74 003a 00C0      		rjmp .L11
+  75               	.L6:
+  76               	.LM20:
+  77 003c 83B1      		in r24,35-32
+  78 003e 8871      		andi r24,lo8(24)
+  79 0040 01F4      		brne .L7
+  80               	.LM21:
+  81 0042 9BB9      		out 43-32,r25
+  82 0044 00C0      		rjmp .L11
+  83               	.L7:
+  84               	.LM22:
+  85 0046 83B1      		in r24,35-32
+  86 0048 8471      		andi r24,lo8(20)
+  87 004a 01F4      		brne .L8
+  88               	.LM23:
+  89 004c 5BB9      		out 43-32,r21
+  90 004e 00C0      		rjmp .L11
+  91               	.L8:
+  92               	.LM24:
+  93 0050 83B1      		in r24,35-32
+  94 0052 8C71      		andi r24,lo8(28)
+  95 0054 01F4      		brne .L9
+  96               	.LM25:
+  97 0056 9BB9      		out 43-32,r25
+  98               	.LM26:
+  99 0058 65B9      		out 37-32,r22
+ 100 005a 00C0      		rjmp .L11
+ 101               	.L9:
+ 102               	.LM27:
+ 103 005c 1BB8      		out 43-32,__zero_reg__
+ 104               	.LM28:
+ 105 005e 25B9      		out 37-32,r18
+ 106 0060 00C0      		rjmp .L11
+ 107               	.LFE2:
+ 133               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 lab2c.c
+C:\Users\Khoa\AppData\Local\Temp/ccCIhHQo.s:2      *ABS*:0000003f __SREG__
+C:\Users\Khoa\AppData\Local\Temp/ccCIhHQo.s:3      *ABS*:0000003e __SP_H__
+C:\Users\Khoa\AppData\Local\Temp/ccCIhHQo.s:4      *ABS*:0000003d __SP_L__
+C:\Users\Khoa\AppData\Local\Temp/ccCIhHQo.s:5      *ABS*:00000034 __CCP__
+C:\Users\Khoa\AppData\Local\Temp/ccCIhHQo.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\Khoa\AppData\Local\Temp/ccCIhHQo.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\Khoa\AppData\Local\Temp/ccCIhHQo.s:18     .text:00000000 main
+
+NO UNDEFINED SYMBOLS

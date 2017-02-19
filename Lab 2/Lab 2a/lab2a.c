@@ -15,6 +15,7 @@ PD6 -->       D6 -->        JP3_5 -->         D1E
 PD7 -->       D7 -->        JP3_6 -->         D1F
 PB0 -->       D8 -->        JP3_7 -->         D1G
 PB1 -->       D9 -->        JP3_8 -->         D1H
+GND -->                     GND
 */
 
 #include <avr/io.h>
@@ -29,7 +30,7 @@ int num = 0;
 
 int main(void) {
   //declare DDRx
-  DDRD = 0b11111100; /* (1<<2)|(1<<3)}(1<<4)|(1<<5)|(1<<6)|(1<<7); */
+  DDRD = 0b11111100;
   DDRB = 0b00000011;
 
   while (1) {
