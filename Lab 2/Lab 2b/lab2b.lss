@@ -3,21 +3,21 @@ lab2b.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000090  00000000  00000000  00000054  2**1
+  0 .text         00000096  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .debug_aranges 00000020  00000000  00000000  000000e4  2**0
+  1 .debug_aranges 00000020  00000000  00000000  000000ea  2**0
                   CONTENTS, READONLY, DEBUGGING
-  2 .debug_pubnames 0000001b  00000000  00000000  00000104  2**0
+  2 .debug_pubnames 0000001b  00000000  00000000  0000010a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  3 .debug_info   00000072  00000000  00000000  0000011f  2**0
+  3 .debug_info   00000072  00000000  00000000  00000125  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_abbrev 0000003f  00000000  00000000  00000191  2**0
+  4 .debug_abbrev 0000003f  00000000  00000000  00000197  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_line   00000079  00000000  00000000  000001d0  2**0
+  5 .debug_line   00000079  00000000  00000000  000001d6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_frame  00000020  00000000  00000000  0000024c  2**2
+  6 .debug_frame  00000020  00000000  00000000  00000250  2**2
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_str    0000008b  00000000  00000000  0000026c  2**0
+  7 .debug_str    0000008b  00000000  00000000  00000270  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -58,7 +58,7 @@ Disassembly of section .text:
   70:	de bf       	out	0x3e, r29	; 62
   72:	cd bf       	out	0x3d, r28	; 61
   74:	0e 94 40 00 	call	0x80	; 0x80 <main>
-  78:	0c 94 46 00 	jmp	0x8c	; 0x8c <_exit>
+  78:	0c 94 49 00 	jmp	0x92	; 0x92 <_exit>
 
 0000007c <__bad_interrupt>:
   7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -66,28 +66,32 @@ Disassembly of section .text:
 00000080 <main>:
 
 
-
 void main(void)
 {
-   DDRB = 0xff;   //PORTB output
+  //set all pins on PORTB to output
+  DDRB = 0xff;
   80:	8f ef       	ldi	r24, 0xFF	; 255
   82:	84 b9       	out	0x04, r24	; 4
-   PORTB = 0xff;  //PORTB '0'
-  84:	85 b9       	out	0x05, r24	; 5
-   DDRD = 0x00;   //PORTD input
-  86:	1a b8       	out	0x0a, r1	; 10
-   PORTD = 0xff;  //PORTD internall pullup
-  88:	8b b9       	out	0x0b, r24	; 11
-/*   while(1)
-   {
-		if(!(PIND & (1<<PD0))) PORTB = PORTD;    //when button pressed, turn ON led
-		else PORTB = 0x00; 						    //when not pressed, turn OFF led
-  }*/
-}
-  8a:	08 95       	ret
 
-0000008c <_exit>:
-  8c:	f8 94       	cli
+  //set PD2 on PORTD to input an leaves other pins untouched
+  DDRD &= ~(1 << PD2);
+  84:	52 98       	cbi	0x0a, 2	; 10
 
-0000008e <__stop_program>:
-  8e:	ff cf       	rjmp	.-2      	; 0x8e <__stop_program>
+  while (1)
+  {
+    if (PIND & (1<<PD2))
+  86:	4a 9b       	sbis	0x09, 2	; 9
+  88:	02 c0       	rjmp	.+4      	; 0x8e <main+0xe>
+      PORTB |= (1<<PB2);
+  8a:	2a 9a       	sbi	0x05, 2	; 5
+  8c:	fc cf       	rjmp	.-8      	; 0x86 <main+0x6>
+    else
+    PORTB &= ~(1<<PB2);
+  8e:	2a 98       	cbi	0x05, 2	; 5
+  90:	fa cf       	rjmp	.-12     	; 0x86 <main+0x6>
+
+00000092 <_exit>:
+  92:	f8 94       	cli
+
+00000094 <__stop_program>:
+  94:	ff cf       	rjmp	.-2      	; 0x94 <__stop_program>

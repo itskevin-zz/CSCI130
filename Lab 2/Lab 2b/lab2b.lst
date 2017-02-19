@@ -16,24 +16,28 @@
   24 0000 8FEF      		ldi r24,lo8(-1)
   25 0002 84B9      		out 36-32,r24
   26               	.LM3:
-  27 0004 85B9      		out 37-32,r24
-  28               	.LM4:
-  29 0006 1AB8      		out 42-32,__zero_reg__
-  30               	.LM5:
-  31 0008 8BB9      		out 43-32,r24
-  32               	/* epilogue start */
-  33               	.LM6:
-  34 000a 0895      		ret
-  35               	.LFE2:
-  61               	.Letext0:
+  27 0004 5298      		cbi 42-32,2
+  28               	.L5:
+  29               	.LM4:
+  30 0006 4A9B      		sbis 41-32,2
+  31 0008 00C0      		rjmp .L2
+  32               	.LM5:
+  33 000a 2A9A      		sbi 37-32,2
+  34 000c 00C0      		rjmp .L5
+  35               	.L2:
+  36               	.LM6:
+  37 000e 2A98      		cbi 37-32,2
+  38 0010 00C0      		rjmp .L5
+  39               	.LFE2:
+  65               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 lab2b.c
-C:\Users\Khoa\AppData\Local\Temp/ccx2j4kj.s:2      *ABS*:0000003f __SREG__
-C:\Users\Khoa\AppData\Local\Temp/ccx2j4kj.s:3      *ABS*:0000003e __SP_H__
-C:\Users\Khoa\AppData\Local\Temp/ccx2j4kj.s:4      *ABS*:0000003d __SP_L__
-C:\Users\Khoa\AppData\Local\Temp/ccx2j4kj.s:5      *ABS*:00000034 __CCP__
-C:\Users\Khoa\AppData\Local\Temp/ccx2j4kj.s:6      *ABS*:00000000 __tmp_reg__
-C:\Users\Khoa\AppData\Local\Temp/ccx2j4kj.s:7      *ABS*:00000001 __zero_reg__
-C:\Users\Khoa\AppData\Local\Temp/ccx2j4kj.s:18     .text:00000000 main
+C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:2      *ABS*:0000003f __SREG__
+C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:3      *ABS*:0000003e __SP_H__
+C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:4      *ABS*:0000003d __SP_L__
+C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:5      *ABS*:00000034 __CCP__
+C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\Khoa\AppData\Local\Temp/ccpK2GPX.s:18     .text:00000000 main
 
 NO UNDEFINED SYMBOLS
