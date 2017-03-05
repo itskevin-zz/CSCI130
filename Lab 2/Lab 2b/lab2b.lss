@@ -3,21 +3,21 @@ lab2b.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000000d8  00000000  00000000  00000054  2**1
+  0 .text         000000d6  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .debug_aranges 00000020  00000000  00000000  0000012c  2**0
+  1 .debug_aranges 00000020  00000000  00000000  0000012a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  2 .debug_pubnames 0000001b  00000000  00000000  0000014c  2**0
+  2 .debug_pubnames 0000001b  00000000  00000000  0000014a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  3 .debug_info   0000009a  00000000  00000000  00000167  2**0
+  3 .debug_info   00000085  00000000  00000000  00000165  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_abbrev 00000064  00000000  00000000  00000201  2**0
+  4 .debug_abbrev 0000004e  00000000  00000000  000001ea  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_line   000000b1  00000000  00000000  00000265  2**0
+  5 .debug_line   000000b1  00000000  00000000  00000238  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_frame  00000020  00000000  00000000  00000318  2**2
+  6 .debug_frame  00000020  00000000  00000000  000002ec  2**2
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_str    00000090  00000000  00000000  00000338  2**0
+  7 .debug_str    0000008b  00000000  00000000  0000030c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -58,7 +58,7 @@ Disassembly of section .text:
   70:	de bf       	out	0x3e, r29	; 62
   72:	cd bf       	out	0x3d, r28	; 61
   74:	0e 94 40 00 	call	0x80	; 0x80 <main>
-  78:	0c 94 6a 00 	jmp	0xd4	; 0xd4 <_exit>
+  78:	0c 94 69 00 	jmp	0xd2	; 0xd2 <_exit>
 
 0000007c <__bad_interrupt>:
   7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -72,71 +72,72 @@ void main(void) {
   DDRD = 0b11111100;  //set PD2-PD7 to output
   80:	8c ef       	ldi	r24, 0xFC	; 252
   82:	8a b9       	out	0x0a, r24	; 10
-  DDRB = 0b00000011; //set PB0-PB1 to output and rest to input
-  84:	83 e0       	ldi	r24, 0x03	; 3
-  86:	84 b9       	out	0x04, r24	; 4
-  PORTB = 0b00001100; // set internal pullups in PB2 and PB3 turn PB0 and PB1 off
-  88:	8c e0       	ldi	r24, 0x0C	; 12
-  8a:	85 b9       	out	0x05, r24	; 5
+  DDRB = 0x00; //set all PBx to input
+  84:	14 b8       	out	0x04, r1	; 4
+  PORTB = 0b1111111; //set PB0 and PB1 internal pullups
+  86:	8f e7       	ldi	r24, 0x7F	; 127
+  88:	85 b9       	out	0x05, r24	; 5
+  //DDRB = 0b00000011; //set PB0-PB1 to output and rest to input
+  //PORTB = 0b00001100; // set internal pullups in PB2 and PB3 turn PB0 and PB1 off
   PORTD = 0b00000000;
-  8c:	1b b8       	out	0x0b, r1	; 11
-  8e:	40 e0       	ldi	r20, 0x00	; 0
-  90:	50 e0       	ldi	r21, 0x00	; 0
+  8a:	1b b8       	out	0x0b, r1	; 11
+  8c:	40 e0       	ldi	r20, 0x00	; 0
+  8e:	50 e0       	ldi	r21, 0x00	; 0
+  //declare num counter
  int num = 0;
 
   do {
-    int loop = 0;
-    loop++;
-    if ((PINB & 0b0000100) == 0 && (loop == 1)) { //check if s4 is pressed
-  92:	1a 99       	sbic	0x03, 2	; 3
-  94:	03 c0       	rjmp	.+6      	; 0x9c <main+0x1c>
+
+    if ((PINB & 0b0000100) == 0) { //check if s4 is pressed
+  90:	1a 99       	sbic	0x03, 2	; 3
+  92:	03 c0       	rjmp	.+6      	; 0x9a <main+0x1a>
       num++;  //add 1 to n i.e. n = 1 on first loop
-  96:	4f 5f       	subi	r20, 0xFF	; 255
-  98:	5f 4f       	sbci	r21, 0xFF	; 255
-  9a:	04 c0       	rjmp	.+8      	; 0xa4 <main+0x24>
+  94:	4f 5f       	subi	r20, 0xFF	; 255
+  96:	5f 4f       	sbci	r21, 0xFF	; 255
+  98:	04 c0       	rjmp	.+8      	; 0xa2 <main+0x22>
       PORTD &= 0b0000011; //clear bits 7 - 2
       PORTD |= (num << 2);  //shift bits
 
       PORTB &= 0b11111100; //clear bits 1 - 0
       PORTB |= (num >> 6);  //shit bits
-    } else if ((PINB & 0b0001000) == 0 && (loop == 1)) { //check if s2 is pressed
-  9c:	1b 99       	sbic	0x03, 3	; 3
-  9e:	f9 cf       	rjmp	.-14     	; 0x92 <main+0x12>
+    } else if ((PINB & 0b0001000) == 0) { //check if s2 is pressed
+  9a:	1b 99       	sbic	0x03, 3	; 3
+  9c:	f9 cf       	rjmp	.-14     	; 0x90 <main+0x10>
       num--; //minus 1 to n
-  a0:	41 50       	subi	r20, 0x01	; 1
-  a2:	50 40       	sbci	r21, 0x00	; 0
+  9e:	41 50       	subi	r20, 0x01	; 1
+  a0:	50 40       	sbci	r21, 0x00	; 0
       PORTD &= 0b00000011; //clear bits
-  a4:	8b b1       	in	r24, 0x0b	; 11
-  a6:	83 70       	andi	r24, 0x03	; 3
-  a8:	8b b9       	out	0x0b, r24	; 11
+  a2:	8b b1       	in	r24, 0x0b	; 11
+  a4:	83 70       	andi	r24, 0x03	; 3
+  a6:	8b b9       	out	0x0b, r24	; 11
       PORTD |= (num << 2); //shift bits
-  aa:	2b b1       	in	r18, 0x0b	; 11
-  ac:	ca 01       	movw	r24, r20
-  ae:	88 0f       	add	r24, r24
-  b0:	99 1f       	adc	r25, r25
-  b2:	88 0f       	add	r24, r24
-  b4:	99 1f       	adc	r25, r25
-  b6:	28 2b       	or	r18, r24
-  b8:	2b b9       	out	0x0b, r18	; 11
+  a8:	2b b1       	in	r18, 0x0b	; 11
+  aa:	ca 01       	movw	r24, r20
+  ac:	88 0f       	add	r24, r24
+  ae:	99 1f       	adc	r25, r25
+  b0:	88 0f       	add	r24, r24
+  b2:	99 1f       	adc	r25, r25
+  b4:	28 2b       	or	r18, r24
+  b6:	2b b9       	out	0x0b, r18	; 11
 
       PORTB &= 0b11111100;
-  ba:	85 b1       	in	r24, 0x05	; 5
-  bc:	8c 7f       	andi	r24, 0xFC	; 252
-  be:	85 b9       	out	0x05, r24	; 5
+  b8:	85 b1       	in	r24, 0x05	; 5
+  ba:	8c 7f       	andi	r24, 0xFC	; 252
+  bc:	85 b9       	out	0x05, r24	; 5
       PORTB |= (num >> 6);
-  c0:	25 b1       	in	r18, 0x05	; 5
-  c2:	ca 01       	movw	r24, r20
-  c4:	36 e0       	ldi	r19, 0x06	; 6
-  c6:	95 95       	asr	r25
-  c8:	87 95       	ror	r24
-  ca:	3a 95       	dec	r19
-  cc:	e1 f7       	brne	.-8      	; 0xc6 <main+0x46>
-  ce:	28 2b       	or	r18, r24
-  d0:	25 b9       	out	0x05, r18	; 5
-  d2:	df cf       	rjmp	.-66     	; 0x92 <main+0x12>
+  be:	25 b1       	in	r18, 0x05	; 5
+  c0:	ca 01       	movw	r24, r20
+  c2:	36 e0       	ldi	r19, 0x06	; 6
+  c4:	95 95       	asr	r25
+  c6:	87 95       	ror	r24
+  c8:	3a 95       	dec	r19
+  ca:	e1 f7       	brne	.-8      	; 0xc4 <main+0x44>
+  cc:	28 2b       	or	r18, r24
+  ce:	25 b9       	out	0x05, r18	; 5
+  d0:	df cf       	rjmp	.-66     	; 0x90 <main+0x10>
 
-000000d4 <_exit>:
-  d4:	f8 94       	cli
+000000d2 <_exit>:
+  d2:	f8 94       	cli
 
-000000d6 <__stop_program>:
-  d6:	ff cf       	rjmp	.-2      	; 0xd6 <__stop_program>
+000000d4 <__stop_program>:
+  d4:	ff cf       	rjmp	.-2      	; 0xd4 <__stop_program>
