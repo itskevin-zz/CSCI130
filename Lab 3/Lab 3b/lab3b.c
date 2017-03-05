@@ -17,6 +17,7 @@ GND -->                     GND
 #include <avr/io.h>
 #define F_CPU 16000000UL
 #include <util/delay.h>
+#include <stdlib.h>
 
 void DELAY_ms (unit16_t_ms_count);
 
@@ -46,13 +47,16 @@ int main(void) {
 
 //function for counting printDec
 void printDec(int num) {
-  if (num <= 10) {
+  char c = num;
+  transmitByte(c);
+
+/*  if (num <= 10) {
     char c = num + '0';
     transmitByte(c);
   } else if (num >= 10) {
     char n = num + 'A';
     transmitByte(n);
-  }
+  }*/
 }
 
 //Initialize settings for UART
