@@ -9,90 +9,53 @@ representation of the count will be output on the serial command. The program
 will only display a new number when there is an increment or decrement in the count.
 Connection Diagram:
 Atmega328p    Romeo Board   IO Board Jumper   Component
-PB2 ->        D10 ->          JP2_8 ->            S4
-PB3 ->        D11 ->          JP2_6 ->            S2
-GND -->                     GND
+PB1 ->        D09 ->          JP2_4 ->            DS4
+PB2 ->        D10 ->          JP2_3 ->            DS3
+PB3 ->        D11 ->          JP2_2 ->            DS2
+PB4 ->        D12 ->          JP2_1 ->            DS1
 */
 
 #include <avr/io.h>
 #define F_CPU 16000000UL
 #include <util/delay.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-
 
 void DELAY_ms (unit16_t_ms_count);
 
 int main(void) {
   initUART(2400);
-  //declare DDRx
-  DDRB = 0x00; //set all PBx to input
-  PORTB = 0b1111111; //set PB0 and PB1 internal pullups
-  int num = 0;
+  DDRB = 0b00000000; //set to input
+  PORTB = 0b11111111; //turn on internal pullups
+
   while(1) {
-        if ((PINB & 0b0000100) == 0) { //check if s4 is pressed
-          delay_ms(100); //Provides required delay
-          if ((PINB & 0b0000100) == 0) {
-            num++;  //add 1 to n
-            printDec(num);
-          }
-        } else if ((PINB & 0b0001000) == 0) { //check if s2 is pressed
-          delay_ms(100); // delay_ms
-          if ((PINB & 0b0001000) == 0) {
-            num--;
-            printDec(num);
-          }
-        }
+    if((PINB & 0b00000100) == 0) {
+      PORTD = 0b00000100;
+    } else if ((PINB & 0b00001000) == 0) {
+      PORTD = 0b00001100;
+    } else if ((PINB & 0b00010000) == 0) {
+      PORTD = 0b00111100;
+    } else if ((PINB & 0b00001100) == 0) {
+      PORTD = 0b00011100;
+    } else if ((PINB & 0b00011000) == 0) {
+      PORTD = 0b11111100;
+    } else if ((PINB & 0b00010100) == 0){
+      PORTD = 0b01111100;
+    } else if ((PINB & 0b00011100) == 0){
+      PORTD = 0b11111100;
+      PORTB = 0b00011110;
+    } else {
+      PORTD = 0b00000000;
+      PORTB = 0b00011100;
+    }
   }
   return 0;
 }
 
-//function for counting printDec
 void printDec(int num) {
   int n = num;
   char ascii[10];
   utoa(n,ascii, 10);
   transmitByte(ascii);
-
-  /*
-  int new_value[4] =num;
-  char buf_temp[4];
-  int temp,x; for (x = 0; x < 4; x++) {
-    new_value[x] = temp % 10;
-    temp = temp / 10;
-    buf_temp[x] = new_value[x] +48;
-  }
-  transmitByte(buf_temp);
-  */
-  /*
-  uint16_t n = num;
-  char buf[8];
-  itoa(n,buf,10);
-  transmitByte(buf);
-  */
-
-  /*
-  int i = num;
-  char buf[8];
-  sprintf(buf,'%d',i);
-  transmitByte(buf);
-  */
-
-  /*
-  char c = num + '0';
-  transmitByte(c);
-  */
-
-  /*
-  unsigned char buf = num;
-  transmitByte(buf); //output
-  buf=(num>>8); //put upper byte into lower
-  transmitByte(buf);
-  */
-}
-
+}s
 
 //Initialize settings for UART
 void initUART(unsigned int baud) {
@@ -124,10 +87,5 @@ void initUART(unsigned int baud) {
       UDR0 = data;
       // Start transmission by writing to UDR0 register
     }
-
-    void delay_ms (uint16_t ms) {
-    	uint16_t i;
-    	for (i = 0; i < ms; i++)
-    		_delay_ms(1);
 
     }

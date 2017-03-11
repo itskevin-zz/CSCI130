@@ -1,0 +1,294 @@
+
+lab4a.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000019c  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  000001f0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 00000060  00000000  00000000  00000210  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   00000187  00000000  00000000  00000270  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000137  00000000  00000000  000003f7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   000001ce  00000000  00000000  0000052e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000070  00000000  00000000  000006fc  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    000000ef  00000000  00000000  0000076c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_loc    0000005f  00000000  00000000  0000085b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000018  00000000  00000000  000008ba  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 8c 00 	call	0x118	; 0x118 <main>
+  78:	0c 94 cc 00 	jmp	0x198	; 0x198 <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <analog>:
+#include <avr/io.h>
+#define F_CPU 16000000UL
+
+//convery analog to digital 10 bits
+uint16_t analog(uint8_t channel) {
+  ADMUX &= 0xF0; // clear last 4 bits
+  80:	90 91 7c 00 	lds	r25, 0x007C
+  84:	90 7f       	andi	r25, 0xF0	; 240
+  86:	90 93 7c 00 	sts	0x007C, r25
+  ADMUX |= channel; //select channel
+  8a:	90 91 7c 00 	lds	r25, 0x007C
+  8e:	98 2b       	or	r25, r24
+  90:	90 93 7c 00 	sts	0x007C, r25
+  ADCSRA |= (1 << ADSC); //start conversion
+  94:	80 91 7a 00 	lds	r24, 0x007A
+  98:	80 64       	ori	r24, 0x40	; 64
+  9a:	80 93 7a 00 	sts	0x007A, r24
+  while (ADCSRA & (1 << ADSC));
+  9e:	80 91 7a 00 	lds	r24, 0x007A
+  a2:	86 fd       	sbrc	r24, 6
+  a4:	fc cf       	rjmp	.-8      	; 0x9e <analog+0x1e>
+  return ADC;
+  a6:	20 91 78 00 	lds	r18, 0x0078
+  aa:	30 91 79 00 	lds	r19, 0x0079
+}
+  ae:	c9 01       	movw	r24, r18
+  b0:	08 95       	ret
+
+000000b2 <initADC>:
+
+//initilize ADC
+void initADC() {
+  ADCSRA = (1 << ADEN); // enable ADCSR
+  b2:	ea e7       	ldi	r30, 0x7A	; 122
+  b4:	f0 e0       	ldi	r31, 0x00	; 0
+  b6:	80 e8       	ldi	r24, 0x80	; 128
+  b8:	80 83       	st	Z, r24
+  ADMUX = (1 << REFS0); // Vref internal connect to AVcc
+  ba:	90 e4       	ldi	r25, 0x40	; 64
+  bc:	90 93 7c 00 	sts	0x007C, r25
+  ADCSRA = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0); // set prescaler
+  c0:	87 e0       	ldi	r24, 0x07	; 7
+  c2:	80 83       	st	Z, r24
+  ADCSRA = (1 << ADSC); // start conversion
+  c4:	90 83       	st	Z, r25
+}
+  c6:	08 95       	ret
+
+000000c8 <initUART>:
+
+//Initialize settings for UART
+void initUART(unsigned int baud) {
+    unsigned int ubrr = F_CPU/8/baud-1;
+  c8:	9c 01       	movw	r18, r24
+  ca:	40 e0       	ldi	r20, 0x00	; 0
+  cc:	50 e0       	ldi	r21, 0x00	; 0
+  ce:	60 e8       	ldi	r22, 0x80	; 128
+  d0:	74 e8       	ldi	r23, 0x84	; 132
+  d2:	8e e1       	ldi	r24, 0x1E	; 30
+  d4:	90 e0       	ldi	r25, 0x00	; 0
+  d6:	0e 94 aa 00 	call	0x154	; 0x154 <__udivmodsi4>
+  da:	21 50       	subi	r18, 0x01	; 1
+  dc:	30 40       	sbci	r19, 0x00	; 0
+    // shift MSB and store in UBRR0H
+    UBRR0H = (unsigned char) (ubrr >> 8);
+  de:	30 93 c5 00 	sts	0x00C5, r19
+   // store LSB in UBRR0L
+    UBRR0L = (unsigned char) ubrr;
+  e2:	20 93 c4 00 	sts	0x00C4, r18
+    // enable double speed mode
+    UCSR0A = (1 << UDRE0) | (1 << U2X0);
+  e6:	82 e2       	ldi	r24, 0x22	; 34
+  e8:	80 93 c0 00 	sts	0x00C0, r24
+    // Enable transmitter/receiver
+    UCSR0B = (1 << RXEN0) | (1 << TXEN0);
+  ec:	88 e1       	ldi	r24, 0x18	; 24
+  ee:	80 93 c1 00 	sts	0x00C1, r24
+    //8-Bit Characters, 0 Stop bits, No parity
+    UCSR0C = (1 << UCSZ00) | (1 << UCSZ01);
+  f2:	86 e0       	ldi	r24, 0x06	; 6
+  f4:	80 93 c2 00 	sts	0x00C2, r24
+  }
+  f8:	08 95       	ret
+
+000000fa <receiveByte>:
+
+      // Read byte from UART
+      unsigned char receiveByte ( void ) {
+         while ( !(UCSR0A &  (1 << RXC0)) );
+  fa:	80 91 c0 00 	lds	r24, 0x00C0
+  fe:	87 ff       	sbrs	r24, 7
+ 100:	fc cf       	rjmp	.-8      	; 0xfa <receiveByte>
+         // Wait for incoming byte
+         return UDR0;
+ 102:	80 91 c6 00 	lds	r24, 0x00C6
+         // Return the byte
+      }
+ 106:	08 95       	ret
+
+00000108 <transmitByte>:
+
+   // Write byte to UART
+    void transmitByte (unsigned char data) {
+ 108:	98 2f       	mov	r25, r24
+      while ( !(UCSR0A & (1 << UDRE0)) );
+ 10a:	80 91 c0 00 	lds	r24, 0x00C0
+ 10e:	85 ff       	sbrs	r24, 5
+ 110:	fc cf       	rjmp	.-8      	; 0x10a <transmitByte+0x2>
+      // Wait for empty transmit buffer
+      UDR0 = data;
+ 112:	90 93 c6 00 	sts	0x00C6, r25
+      // Start transmission by writing to UDR0 register
+    }
+ 116:	08 95       	ret
+
+00000118 <main>:
+    int main(void) {
+ 118:	1f 93       	push	r17
+  return ADC;
+}
+
+//initilize ADC
+void initADC() {
+  ADCSRA = (1 << ADEN); // enable ADCSR
+ 11a:	80 e8       	ldi	r24, 0x80	; 128
+ 11c:	80 93 7a 00 	sts	0x007A, r24
+  ADMUX = (1 << REFS0); // Vref internal connect to AVcc
+ 120:	90 e4       	ldi	r25, 0x40	; 64
+ 122:	90 93 7c 00 	sts	0x007C, r25
+  ADCSRA = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0); // set prescaler
+ 126:	87 e0       	ldi	r24, 0x07	; 7
+ 128:	80 93 7a 00 	sts	0x007A, r24
+  ADCSRA = (1 << ADSC); // start conversion
+ 12c:	90 93 7a 00 	sts	0x007A, r25
+      // Start transmission by writing to UDR0 register
+    }
+    int main(void) {
+      uint16_t pot_result; //create variable to store pot result
+      initADC(); //initilize ADC
+      initUART(2400);
+ 130:	80 e6       	ldi	r24, 0x60	; 96
+ 132:	99 e0       	ldi	r25, 0x09	; 9
+ 134:	0e 94 64 00 	call	0xc8	; 0xc8 <initUART>
+
+      // initialize Ports, DDR
+      DDRC = 0x00; //set all PBx to input
+ 138:	17 b8       	out	0x07, r1	; 7
+      PORTC = 0b1111111; //set PB0 and PB1 internal pullups
+ 13a:	8f e7       	ldi	r24, 0x7F	; 127
+ 13c:	88 b9       	out	0x08, r24	; 8
+
+   // Write byte to UART
+    void transmitByte (unsigned char data) {
+      while ( !(UCSR0A & (1 << UDRE0)) );
+      // Wait for empty transmit buffer
+      UDR0 = data;
+ 13e:	11 e3       	ldi	r17, 0x31	; 49
+      // initialize Ports, DDR
+      DDRC = 0x00; //set all PBx to input
+      PORTC = 0b1111111; //set PB0 and PB1 internal pullups
+      while(1) {
+        //application loop
+        pot_result = analog(0);
+ 140:	80 e0       	ldi	r24, 0x00	; 0
+ 142:	0e 94 40 00 	call	0x80	; 0x80 <analog>
+         // Return the byte
+      }
+
+   // Write byte to UART
+    void transmitByte (unsigned char data) {
+      while ( !(UCSR0A & (1 << UDRE0)) );
+ 146:	80 91 c0 00 	lds	r24, 0x00C0
+ 14a:	85 ff       	sbrs	r24, 5
+ 14c:	fc cf       	rjmp	.-8      	; 0x146 <main+0x2e>
+      // Wait for empty transmit buffer
+      UDR0 = data;
+ 14e:	10 93 c6 00 	sts	0x00C6, r17
+ 152:	f6 cf       	rjmp	.-20     	; 0x140 <main+0x28>
+
+00000154 <__udivmodsi4>:
+ 154:	a1 e2       	ldi	r26, 0x21	; 33
+ 156:	1a 2e       	mov	r1, r26
+ 158:	aa 1b       	sub	r26, r26
+ 15a:	bb 1b       	sub	r27, r27
+ 15c:	fd 01       	movw	r30, r26
+ 15e:	0d c0       	rjmp	.+26     	; 0x17a <__udivmodsi4_ep>
+
+00000160 <__udivmodsi4_loop>:
+ 160:	aa 1f       	adc	r26, r26
+ 162:	bb 1f       	adc	r27, r27
+ 164:	ee 1f       	adc	r30, r30
+ 166:	ff 1f       	adc	r31, r31
+ 168:	a2 17       	cp	r26, r18
+ 16a:	b3 07       	cpc	r27, r19
+ 16c:	e4 07       	cpc	r30, r20
+ 16e:	f5 07       	cpc	r31, r21
+ 170:	20 f0       	brcs	.+8      	; 0x17a <__udivmodsi4_ep>
+ 172:	a2 1b       	sub	r26, r18
+ 174:	b3 0b       	sbc	r27, r19
+ 176:	e4 0b       	sbc	r30, r20
+ 178:	f5 0b       	sbc	r31, r21
+
+0000017a <__udivmodsi4_ep>:
+ 17a:	66 1f       	adc	r22, r22
+ 17c:	77 1f       	adc	r23, r23
+ 17e:	88 1f       	adc	r24, r24
+ 180:	99 1f       	adc	r25, r25
+ 182:	1a 94       	dec	r1
+ 184:	69 f7       	brne	.-38     	; 0x160 <__udivmodsi4_loop>
+ 186:	60 95       	com	r22
+ 188:	70 95       	com	r23
+ 18a:	80 95       	com	r24
+ 18c:	90 95       	com	r25
+ 18e:	9b 01       	movw	r18, r22
+ 190:	ac 01       	movw	r20, r24
+ 192:	bd 01       	movw	r22, r26
+ 194:	cf 01       	movw	r24, r30
+ 196:	08 95       	ret
+
+00000198 <_exit>:
+ 198:	f8 94       	cli
+
+0000019a <__stop_program>:
+ 19a:	ff cf       	rjmp	.-2      	; 0x19a <__stop_program>
